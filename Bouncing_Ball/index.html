@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="Mycanvas" style="border:2px solid"></canvas>
+
+    <script>
+
+        //canvas setup
+        var canvas = document.getElementById("Mycanvas");
+        var c=canvas.getContext("2d");
+
+        canvas.width =window.innerWidth-20.0;
+        canvas.height =window.innerHeight-100.0;
+
+        var simMinWidth=20.0;
+
+        var cscale=Math.min(canvas.width,canvas.height)/simMinWidth;
+        var simWidth=canvas.width*cscale;
+        var simHeight=canvas.height*cscale;
+
+        function cx(pos)
+        {
+            return pos.x*cscale;
+        }
+
+        function cy(pos)
+        {
+            return canvas.height-pos.y*cscale;
+        }
+
+        //scene
+        var gravity={x:0.0,y:-10.0};
+        var timeStep=1.0/60;
+        
+        var ball={
+            radius:0.2,
+            pos:{x: 0.2,y:0.2},
+            vel:{x:10.0,y:15.0}
+        }
+
+
+        function draw()
+        {
+            c.clearRect(0,0,canvas.width,canvas.height);
+            c.fillStyle="#FF0000";
+
+            c.beginPath();
+            c.arc(cx(ball.pos),cy(ball.pos),ball.radius*cscale,0.0,2*Math.PI);
+            c.closePath();
+
+            c.fill();
+        }
+
+        function simulate()
+        {
+            ball.vel.x+=gravity.x*timeStep;
+            ball.pos.x+=ball.vel.x*timeStep;
+
+            ball.vel.y+=gravity.y*timeStep;
+            ball.pos.y+=ball.vel.y*timeStep;
+
+            if(ball.pos.x<0.0)
+            {
+                ball.pos.x=0.0;
+                ball.vel.x=-ball.vel.x;
+            }
+
+            if(ball.pos.x>simWidth)
+            {
+                ball.pos.x=simWidth
+                ball.vel.x=-ball.vel.x;
+            }
+
+            if(ball.pos.y<0.0)
+            {
+                ball.pos.y=0.0;
+                ball.vel.y=-ball.vel.y;
+            }
+        }
+
+        function update()
+        {
+            simulate();
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>
