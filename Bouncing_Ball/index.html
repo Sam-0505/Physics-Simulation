@@ -17,7 +17,8 @@
 
         canvas.width =window.innerWidth-20.0;
         canvas.height =window.innerHeight-100.0;
-
+        
+        //Here a coordinate system with width of 20.0 is being mapped to the canvas whose size is dependent on the window
         var simMinWidth=20.0;
 
         var cscale=Math.min(canvas.width,canvas.height)/simMinWidth;
@@ -29,6 +30,7 @@
             return pos.x*cscale;
         }
 
+        //JavaScript canvas has its center at the top left corner while general 2D physics coordinate system has center at bottom left
         function cy(pos)
         {
             return canvas.height-pos.y*cscale;
